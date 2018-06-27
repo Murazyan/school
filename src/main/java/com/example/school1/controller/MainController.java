@@ -57,10 +57,11 @@ public class MainController {
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         IOUtils.copy(in, response.getOutputStream());
     }
+
     @PostMapping("/addQuestion")
     public String addquestion(@AuthenticationPrincipal CurrentUser currentUser,
-                           @ModelAttribute Question question,
-                           @RequestParam("picture") MultipartFile multipartFile) throws IOException {
+                              @ModelAttribute Question question,
+                              @RequestParam("picture") MultipartFile multipartFile) throws IOException {
         String pictureName = System.currentTimeMillis() + "_" + multipartFile.getOriginalFilename();
         File imageDir = new File(imageUploadDir);
         if (!imageDir.exists()) {
@@ -82,16 +83,10 @@ public class MainController {
         userRepository.save(user);
         return "redirect:/page-login";
     }
+
     @GetMapping("/")
     public String index2() {
         return "index-03";
-    }
-
-
-
-    @GetMapping("/4")
-    public String index4() {
-        return "index-04";
     }
 
     @GetMapping("/page-login")
@@ -103,17 +98,18 @@ public class MainController {
     @GetMapping("/loginSuccess")
     public String loginSuccess(@AuthenticationPrincipal UserDetails userDetails) {
         CurrentUser currentUser = (CurrentUser) userDetails;
-        if(currentUser!=null){
+        if (currentUser != null) {
             return "redirect:/blog-lg-post-grid";
-        }else  return "redirect:/page-login";
+        } else return "redirect:/page-login";
     }
 
-    @GetMapping("/blog-lg-post-grid" )
+    @GetMapping("/blog-lg-post-grid")
     public String bloglgpostgrid(ModelMap modelMap, @AuthenticationPrincipal CurrentUser currentUser) {
-        modelMap.addAttribute("currentUser",currentUser.getUser());
-        modelMap.addAttribute("alquestion",questionRepository.findAllByUserId(currentUser.getUser().getId()));
+        modelMap.addAttribute("currentUser", currentUser.getUser());
+        modelMap.addAttribute("alquestion", questionRepository.findAllByUserId(currentUser.getUser().getId()));
         return "blog-lg-post-grid";
     }
+
     @GetMapping("/page-register")
     public String pageRegister(ModelMap modelMap) {
         modelMap.addAttribute("user", new User());
@@ -133,22 +129,24 @@ public class MainController {
 
     @GetMapping("/blog-contained")
     public String blogContained(ModelMap modelMap) {
-        modelMap.addAttribute("allLesson",lessonRepository.findAll());
-        modelMap.addAttribute("question",new Question());
+        modelMap.addAttribute("allLesson", lessonRepository.findAll());
+        modelMap.addAttribute("question", new Question());
         return "blog-contained";
     }
+
     @GetMapping("/add-article")
-    public String addArticle(ModelMap modelMap,  @AuthenticationPrincipal CurrentUser currentUser) {
-        modelMap.addAttribute("currentUser",currentUser.getUser());
-        modelMap.addAttribute("article",new Article());
-        modelMap.addAttribute("articlePictur",new ArticlePicture());
+    public String addArticle(ModelMap modelMap, @AuthenticationPrincipal CurrentUser currentUser) {
+        modelMap.addAttribute("currentUser", currentUser.getUser());
+        modelMap.addAttribute("article", new Article());
+        modelMap.addAttribute("articlePictur", new ArticlePicture());
 
         return "add-article";
     }
+
     @PostMapping("/addArticle")
     public String addArticle(@AuthenticationPrincipal CurrentUser currentUser,
-                              @ModelAttribute Article article, @ModelAttribute ArticlePicture articlePicture,
-                              @RequestParam("picture") MultipartFile multipartFile) throws IOException {
+                             @ModelAttribute Article article, @ModelAttribute ArticlePicture articlePicture,
+                             @RequestParam("picture") MultipartFile multipartFile) throws IOException {
         String pictureName = System.currentTimeMillis() + "_" + multipartFile.getOriginalFilename();
         File imageDir = new File(imageUploadDir);
         if (!imageDir.exists()) {
@@ -166,43 +164,63 @@ public class MainController {
     }
 
     @GetMapping("/blog-sidebar-right")
-    public String sidebarRight(ModelMap map,@RequestParam(value = "id") Integer id) {
+    public String sidebarRight(ModelMap map, @RequestParam(value = "id") Integer id) {
         map.addAttribute("lessons", lessonRepository.findAll());
-        map.addAttribute("questuonBylesson",questionRepository.findAllByLessonId(id));
+        map.addAttribute("questuonBylesson", questionRepository.findAllByLessonId(id));
         return "blog-sidebar-right";
     }
+
     @GetMapping("/blog-masonry")
     public String allArticle(ModelMap map,
                              @AuthenticationPrincipal CurrentUser currentUser) {
 //        map.addAttribute("isLoggedIn", currentUser  != null);
 //        map.addAttribute("allarticle",articleRepository.findAll());
-        map.addAttribute("allarticlePicture",articlePictureRepository.findAll());
+        map.addAttribute("allarticlePicture", articlePictureRepository.findAll());
         return "blog-masonry";
     }
-    @GetMapping("/post-gallery")
-    public String postgallery(ModelMap map,
-                             @AuthenticationPrincipal CurrentUser currentUser,@RequestParam(value = "id") Integer id,
-                              @RequestParam(value = "comId") Integer comId
-    ) {
-//        map.addAttribute("isLoggedIn", currentUser  != null);
-        map.addAttribute("currentUser",currentUser.getUser());
-        map.addAttribute("comment",new Comment());
 
-        map.addAttribute("allarticlePicture",articlePictureRepository.findById(id));
-        map.addAttribute("comentByArticleId",commentRepository.findAllByArticleId(comId));
+    @GetMapping("/post-gallery")
+    public String postgallery(ModelMap map, @AuthenticationPrincipal CurrentUser currentUser, @RequestParam(value = "id") Integer id) {
+        map.addAttribute("currentUser", currentUser.getUser());
+        map.addAttribute("comment", new Comment());
+
+        map.addAttribute("allarticlePicture", articlePictureRepository.findById(id));
+        map.addAttribute("comentByArticleId", commentRepository.findAllByArticlePictureId(id));
 
         return "post-gallery";
     }
 
+    @GetMapping("/question-readmore")
+    public String questionReadMore(ModelMap map, @AuthenticationPrincipal CurrentUser currentUser, @RequestParam(value = "id") Integer id) {
+        map.addAttribute("currentUser", currentUser.getUser());
+        map.addAttribute("question", new Question());
+        map.addAttribute("commentquestion", new Comment());
+
+        map.addAttribute("allquestion", questionRepository.findById(id));
+        map.addAttribute("comentByQuestionId", commentRepository.findAllByQuestionId(id));
+
+        return "question-readmore";
+    }
+
     @PostMapping("/add-coment")
-    public String addComment(ModelMap modelMap,  @AuthenticationPrincipal CurrentUser currentUser,  @ModelAttribute Comment comment,@RequestParam(value = "id") Integer id
+    public String addComment(ModelMap modelMap, @AuthenticationPrincipal CurrentUser currentUser, @ModelAttribute Comment comment, @RequestParam(value = "id") Integer id
     ) {
-        User ucer = currentUser.getUser();
+        User user = currentUser.getUser();
         Optional<ArticlePicture> byId = articlePictureRepository.findById(id);
-        Article articl = byId.get().getArticle();
-        comment.setUser(ucer);
-        comment.setArticle(articl);
+        comment.setUser(user);
+        comment.setArticlePicture(byId.get());
         commentRepository.save(comment);
         return "redirect:/blog-masonry";
+    }
+
+    @PostMapping("/add-question-coment")
+    public String addQuestionComment(ModelMap modelMap, @AuthenticationPrincipal CurrentUser currentUser, @ModelAttribute Comment comment, @RequestParam(value = "id") Integer id
+    ) {
+        User user = currentUser.getUser();
+        Optional<Question> byId = questionRepository.findById(id);
+        comment.setUser(user);
+        comment.setQuestion(byId.get());
+        commentRepository.save(comment);
+        return "redirect:/blog-sidebar-left";
     }
 }

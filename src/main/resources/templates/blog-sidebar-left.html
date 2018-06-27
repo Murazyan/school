@@ -444,7 +444,7 @@
                                 </li>
                             </ul>
                             <p th:text="${q.description}"></p>
-                            <a href="blog-sidebar-left#" class="btn btn-outline-secondary">Read More</a>
+                            <a  th:href="@{/question-readmore(id=${q.getId()})}"class="btn btn-outline-secondary">Read More</a>
                         </div>
                     </article>
 

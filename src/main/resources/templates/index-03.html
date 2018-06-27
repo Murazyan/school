@@ -6,11 +6,14 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>21 School</title>
+
         <!-- Plugins CSS -->
         <link href="css/plugins/plugins.css" rel="stylesheet">
         <!-- load css for cubeportfolio -->
         <link rel="stylesheet" type="text/css" href="cubeportfolio/css/cubeportfolio.min.css">
         <link href="css/style.css" rel="stylesheet">
+        <link href="css/Map.css" rel="stylesheet">
+
     </head>
 
     <body>
@@ -767,6 +770,68 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+
+            <div class="col-md-3 mb20">
+                <h4 class="text-uppercase mb30">
+                    Contact Info
+                </h4>
+                <div class="media mb20">
+                    <i class="d-flex mt5 fa fa-home icon-sm-rounded mr-3"></i>
+                    <div class="media-body">
+                        <h5 class="mt-0 mb0 text-uppercase">Address</h5>
+                        Armenia, 3101, Shirak Marz, Gyumri
+                        Mher Mkrtchyan St., 47 Building
+                    </div>
+                </div>
+                <div class="media mb20">
+                    <i class="d-flex mt5 fa fa-phone icon-sm-rounded mr-3"></i>
+                    <div class="media-body">
+                        <h5 class="mt-0 mb0 text-uppercase">Phone</h5>
+                        +374 312-3-24-57
+                    </div>
+                </div>
+                <div class="media mb20">
+                    <i class="d-flex mt5 fa fa-envelope icon-sm-rounded mr-3"></i>
+                    <div class="media-body">
+                        <h5 class="mt-0 mb0 text-uppercase">Email</h5>
+                        support@assan.com
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb40">
+                <h4 class="text-uppercase mb30">
+                    our Location
+                </h4>
+                <div id="markermap" style="width: 100%;height: 300px;"></div>
+            </div>
+            <div class="col-md-3 mb20">
+                <h4 class="text-uppercase mb30">
+                    Working hours
+                </h4>
+                <div class="media mb20">
+                    <i class="d-flex mt5 fa fa-clock-o mr-3"></i>
+                    <div class="media-body">
+                        <h5 class="mt-0 mb0 text-uppercase">Monday - Friday</h5>
+                        09am - 15am
+                    </div>
+                </div>
+                <div class="media mb20">
+                    <i class="d-flex mt5 fa fa-clock-o mr-3"></i>
+                    <div class="media-body">
+                        <h5 class="mt-0 mb0 text-uppercase">Saturday</h5>
+                        Off
+                    </div>
+                </div>
+                <div class="media mb20">
+                    <i class="d-flex mt5 fa fa-clock-o mr-3"></i>
+                    <div class="media-body">
+                        <h5 class="mt-0 mb0 text-uppercase">Sunday</h5>
+                        Off
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="footer-bottomAlt">
             <div class="container">
                 <div class="row">
@@ -873,6 +938,29 @@
                     lightboxCounter: '<div class="cbp-popup-lightbox-counter">{{current}} of {{total}}</div>'
                 });
             })(jQuery, window, document);
+        </script>
+        <!--google map-->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMwVpUj3-oHHW8N21819BhKttOga2Rj2s"></script>
+        <script src="js/jquery.gmap.min.js"></script>
+        <script>
+            // Marker Map
+            $(document).ready(function () {
+                map = new GMaps({
+                    scrollwheel: false,
+                    el: '#markermap',
+                    lat: 40.798986,
+                    lng: 43.842509
+
+                });
+                map.addMarker({
+                    lat: 40.798986,
+                    lng: 43.842509,
+                    title: 'Marker with InfoWindow',
+                    infoWindow: {
+                        content: '<h4>21 School</h4><p>The flag is my heart</p>'
+                    }
+                });
+            });
         </script>
     </body>
 </html>

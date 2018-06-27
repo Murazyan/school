@@ -23,7 +23,7 @@ public class Comment {
     @ManyToOne
     private User user;
     @ManyToOne
-    private Article article;
+    private ArticlePicture articlePicture;
     @ManyToOne
     private Question question;
 }

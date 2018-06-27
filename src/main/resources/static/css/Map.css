@@ -1,0 +1,61 @@
+
+element.style {
+}
+.map_place {
+    display: block;
+    width: 402px;
+    padding: 0 7px;
+    float: right;
+}
+* {
+    font-family: "Trebuchet MS";
+    font-size: 14px;
+}
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    vertical-align: baseline;
+    background: transparent;
+}
+
+div {
+    display: block;
+}
+* {
+    font-family: "Trebuchet MS";
+    font-size: 14px;
+}
+* {
+    font-family: "Trebuchet MS";
+    font-size: 14px;
+}
+* {
+    font-family: "Trebuchet MS";
+    font-size: 14px;
+}
+#content {
+    line-height: 120%;
+}
+* {
+    font-family: "Trebuchet MS";
+    font-size: 14px;
+}
+* {
+    font-family: "Trebuchet MS";
+    font-size: 14px;
+}
+body {
+    color: #000;
+    line-height: 1;
+    background: #FFF;
+}
+* {
+    font-family: "Trebuchet MS";
+    font-size: 14px;
+}
+* {
+    font-family: "Trebuchet MS";
+    font-size: 14px;
+}

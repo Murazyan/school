@@ -11737,7 +11737,7 @@ select.form-control-lg:not([size]):not([multiple]) {
 }
 
 .form-check-inline {
-  display: -webkit-inline-box;
+  /*display: -webkit-inline-box;*/
   display: -ms-inline-flexbox;
   display: inline-flex;
   -webkit-box-align: center;
@@ -12998,7 +12998,7 @@ tbody.collapse.show {
 .btn-group,
 .btn-group-vertical {
   position: relative;
-  display: -webkit-inline-box;
+  /*display: -webkit-inline-box;*/
   display: -ms-inline-flexbox;
   display: inline-flex;
   vertical-align: middle;
@@ -13301,7 +13301,7 @@ tbody.collapse.show {
 }
 
 .custom-control-inline {
-  display: -webkit-inline-box;
+  /*display: -webkit-inline-box;*/
   display: -ms-inline-flexbox;
   display: inline-flex;
   margin-right: 1rem;
