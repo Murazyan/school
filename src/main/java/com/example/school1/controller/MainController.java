@@ -173,8 +173,7 @@ public class MainController {
     @GetMapping("/blog-masonry")
     public String allArticle(ModelMap map,
                              @AuthenticationPrincipal CurrentUser currentUser) {
-//        map.addAttribute("isLoggedIn", currentUser  != null);
-//        map.addAttribute("allarticle",articleRepository.findAll());
+
         map.addAttribute("allarticlePicture", articlePictureRepository.findAll());
         return "blog-masonry";
     }
