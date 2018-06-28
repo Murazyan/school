@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -108,6 +109,11 @@ public class MainController {
         modelMap.addAttribute("currentUser", currentUser.getUser());
         modelMap.addAttribute("alquestion", questionRepository.findAllByUserId(currentUser.getUser().getId()));
         modelMap.addAttribute("alluser", userRepository.findAll());
+        User user = currentUser.getUser();
+
+
+        modelMap.addAttribute("currentfollowing", user.getFriendsUser());
+
         return "blog-lg-post-grid";
     }
 
@@ -230,24 +236,42 @@ public class MainController {
         String userNamae;
         String userSurname;
         String[] split = text.split(" ");
-        if(split.length==2){
-            userNamae=split[0];
-            userSurname=split[1];
-            map.addAttribute("searchUser",userRepository.findAllByNameOrSurname(userNamae,userSurname));
+        if (split.length == 2) {
+            userNamae = split[0];
+            userSurname = split[1];
+            map.addAttribute("searchUser", userRepository.findAllByNameOrSurname(userNamae, userSurname));
         }
-        if(split.length==1) {
+        if (split.length == 1) {
             if (userRepository.findAllByName(split[0]).size() != 0) {
                 map.addAttribute("searchUser", userRepository.findAllByName(split[0]));
-            } else  {
+            } else {
                 map.addAttribute("searchUser", userRepository.findAllBySurname(split[0]));
             }
         }
         return "searchUser";
     }
+
     @GetMapping("/guestUser")
-    public String guestuser(ModelMap modelMap, @RequestParam(value = "id")Integer id) {
-        modelMap.addAttribute("guestUser",userRepository.findById(id));
+    public String guestuser(ModelMap modelMap, @RequestParam(value = "id") Integer id) {
+        modelMap.addAttribute("allU",new User());
+        modelMap.addAttribute("guestUser", userRepository.findById(id));
         modelMap.addAttribute("allQuestion", questionRepository.findAllByUserId(id));
         return "guestUser";
     }
+
+    @PostMapping("/following")
+    public String following(@AuthenticationPrincipal CurrentUser currentUser, @RequestParam(value = "id") Integer id) {
+        User user = currentUser.getUser();
+        Optional<User> byId = userRepository.findById(id);
+        List<User> friendsUser = user.getFriendsUser();
+        User user1 = byId.get();
+        user1.setNote(true);
+        userRepository.save(user1);
+        friendsUser.add(byId.get());
+        user.setFriendsUser(friendsUser);
+        userRepository.save(user);
+        return "redirect:/blog-lg-post-grid";
+    }
+
+
 }

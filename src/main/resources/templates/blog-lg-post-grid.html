@@ -23,46 +23,19 @@
             <a href="javascript:void(0)" class="pushy-link text-white-gray">Close</a>
         </div>
         <ul class="list-unstyled">
-            <li class="clearfix">
+            <li th:if="${currentUser.note}==true">
+                <h4 style="color: red">We have a new note</h4>
+            </li>
+            <li class="clearfix" th:each="a:${currentfollowing}">
                 <a href="blog-lg-post-grid" class="float-left">
-                    <img src="images/shop/p1.jpg" class="img-fluid" alt="" width="60">
+                    <img th:src="@{/image(fileName=${a.getPicUrl()})}" class="img-fluid" alt="" width="60">
                 </a>
                 <div class="oHidden">
                     <span class="close"><i class="ti-close"></i></span>
-                    <h4><a href="blog-lg-post-grid">Men's Special Watch</a></h4>
+                    <h4><a th:href="@{/guestUser(id=${a.getId()})}" name="id" th:text="${a.name}"></a></h4>
                     <p class="text-white-gray"><strong>$299.00</strong> x 1</p>
                 </div>
-            </li><!--/cart item-->
-            <li class="clearfix">
-                <a href="blog-lg-post-grid" class="float-left">
-                    <img src="images/shop/p2.jpg" class="img-fluid" alt="" width="60">
-                </a>
-                <div class="oHidden">
-                    <span class="close"><i class="ti-close"></i></span>
-                    <h4><a href="blog-lg-post-grid">Men's tour beg</a></h4>
-                    <p class="text-white-gray"><strong>$99.00</strong> x 1</p>
-                </div>
-            </li><!--/cart item-->
-            <li class="clearfix">
-                <a href="blog-lg-post-grid" class="float-left">
-                    <img src="images/shop/p3.jpg" class="img-fluid" alt="" width="60">
-                </a>
-                <div class="oHidden">
-                    <span class="close"><i class="ti-close"></i></span>
-                    <h4><a href="blog-lg-post-grid">Women's T-shirts</a></h4>
-                    <p class="text-white-gray"><strong>$199.00</strong> x 1</p>
-                </div>
-            </li><!--/cart item-->
-            <li class="clearfix">
-
-                <div class="float-right">
-                    <a href="blog-lg-post-grid" class="btn btn-primary">Checkout</a>
-                </div>
-                <h4 class="text-white">
-                    <small>Subtotal -</small>
-                    $49.99
-                </h4>
-            </li><!--/cart item-->
+            </li>
         </ul>
     </div>
 </aside>
@@ -78,17 +51,6 @@
         </form>
     </div><!--/search form-->
     <div class="container">
-
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-                data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <a class="navbar-brand" href="index">
-            <img class='logo logo-dark visible-md-up  hidden-lg-up' src="images/logo.png" alt="">
-            <img class='logo logo-light hidden-xs-down hidden-sm-down hidden-md-down' src="images/logo-light.png"
-                 alt="">
-        </a>
         <div id="navbarNavDropdown" class="navbar-collapse collapse">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
@@ -269,6 +231,11 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item dropdown dropdown-full-width">
+                    <a href="javascript:void(0)" class="nav-link menu-btn" style="color: #fff4f3;">My Folloing
+                        <span class="badge badge-default" th:text="${currentfollowing.size()}"></span></a>
+                </li>
+
                 <li class="nav-item dropdown active">
                     <a class="nav-link  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                        aria-expanded="false" href="blog-lg-post-grid">Blog</a>
@@ -440,10 +407,12 @@
                 </li>
             </ul>
         </div>
+
         <div class="mb40">
             <form action="/search" method="get">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search..." aria-describedby="basic-addon2"  name="keyword"/>
+                    <input type="text" class="form-control" placeholder="Search..." aria-describedby="basic-addon2"
+                           name="keyword"/>
                     <input type="submit" class="input-group-addon" id="basic-addon2"/><i class="ti-search"></i>
                 </div>
             </form>
@@ -462,11 +431,11 @@
     </div>
 </div><!--page title end-->
 <div class="container mb30">
-    <div th:if="${currentUser.note}==true">
-        <h3 >We have a new note</h3>
-    </div>
+    <!--<div th:if="${currentUser.note}==true">-->
+        <!--<h3 style="color: red">We have a new note</h3>-->
+    <!--</div>-->
     <article class="col-md-12 post-masonry mb40">
-        <img th:src="@{/image(fileName=${currentUser.getPicUrl()})}" alt=""   class="img-fluid mb20">
+        <img th:src="@{/image(fileName=${currentUser.getPicUrl()})}" alt="" class="img-fluid mb20">
         <a href="blog-lg-post-grid"><h4 class="masonry-title mb0" th:text="${currentUser.name}"></h4></a>
         <a href="blog-lg-post-grid"><h4 class="masonry-title mb0" th:text="${currentUser.surname}"></h4></a>
         <ul class="post-meta list-inline">
@@ -486,7 +455,7 @@
         <h1>My questions</h1><br>
         <article class="article-post mb70" th:each="q:${alquestion}">
             <a class="post-thumb mb30" href="blog-sidebar-left#">
-                <img th:src="@{/image(fileName=${q.getPicUrl()})}" alt="" class="img-fluid" >
+                <img th:src="@{/image(fileName=${q.getPicUrl()})}" alt="" class="img-fluid">
                 <div class="post-overlay">
                     <span>Photography question</span>
                 </div>

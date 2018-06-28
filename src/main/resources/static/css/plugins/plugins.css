@@ -7829,7 +7829,7 @@
   height: 100%;
   top: 0;
   z-index: 9999;
-  background: #7d0707;
+  background: #2a99d3;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   /* enables momentum scrolling in iOS overflow elements */

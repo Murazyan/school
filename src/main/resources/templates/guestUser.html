@@ -462,17 +462,17 @@
             </div>
         </div>
     </div>
-</div><!--page title end-->
+</div>
 <div class="container mb30">
     <article class="col-md-12 post-masonry mb40">
         <img th:src="@{/image(fileName=${guestUser.get().getPicUrl()})}" alt=""   class="img-fluid mb20">
         <h4 class="masonry-title mb0" th:text="${guestUser.get().name}"></h4>
         <h4 class="masonry-title mb0" th:text="${guestUser.get().surname}"></h4>
-
-        <!--<p>-->
-        <!--Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus .-->
-        <!--</p>-->
-    </article><!--article post-->
+        <form th:action="@{/following}" method="post" th:object="${allU}">
+            <button th:field="*{friendsUser}">Following
+            <input type="hidden" name="id" th:value="${guestUser.get().id}" ></button>
+        </form>
+    </article>
 
 
     <div class="col-md-9">
