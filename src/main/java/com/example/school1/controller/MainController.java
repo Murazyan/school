@@ -107,6 +107,7 @@ public class MainController {
     public String bloglgpostgrid(ModelMap modelMap, @AuthenticationPrincipal CurrentUser currentUser) {
         modelMap.addAttribute("currentUser", currentUser.getUser());
         modelMap.addAttribute("alquestion", questionRepository.findAllByUserId(currentUser.getUser().getId()));
+        modelMap.addAttribute("alluser", userRepository.findAll());
         return "blog-lg-post-grid";
     }
 
@@ -221,5 +222,32 @@ public class MainController {
         comment.setQuestion(byId.get());
         commentRepository.save(comment);
         return "redirect:/blog-sidebar-left";
+    }
+
+    @GetMapping("/search")
+    public String searchUser(ModelMap map, @RequestParam(value = "keyword") String text) {
+
+        String userNamae;
+        String userSurname;
+        String[] split = text.split(" ");
+        if(split.length==2){
+            userNamae=split[0];
+            userSurname=split[1];
+            map.addAttribute("searchUser",userRepository.findAllByNameOrSurname(userNamae,userSurname));
+        }
+        if(split.length==1) {
+            if (userRepository.findAllByName(split[0]).size() != 0) {
+                map.addAttribute("searchUser", userRepository.findAllByName(split[0]));
+            } else  {
+                map.addAttribute("searchUser", userRepository.findAllBySurname(split[0]));
+            }
+        }
+        return "searchUser";
+    }
+    @GetMapping("/guestUser")
+    public String guestuser(ModelMap modelMap, @RequestParam(value = "id")Integer id) {
+        modelMap.addAttribute("guestUser",userRepository.findById(id));
+        modelMap.addAttribute("allQuestion", questionRepository.findAllByUserId(id));
+        return "guestUser";
     }
 }

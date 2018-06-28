@@ -8,7 +8,7 @@ import java.util.List;
 
 
 public interface QuestionRepository extends JpaRepository<Question,Integer> {
-    List<Question> findAllByUserId(int id);
+    List<Question> findAllByUserId(Integer id);
     List<Question> findAllByLessonId(Integer id);
 
 }

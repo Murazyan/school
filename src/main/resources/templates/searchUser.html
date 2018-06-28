@@ -441,12 +441,15 @@
             </ul>
         </div>
         <div class="mb40">
-            <form action="/search" method="get">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search..." aria-describedby="basic-addon2"  name="keyword"/>
-                    <input type="submit" class="input-group-addon" id="basic-addon2"/><i class="ti-search"></i>
-                </div>
-            </form>
+            <div class="mb40">
+                <form action="/search" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search..." aria-describedby="basic-addon2"  name="keyword"/>
+                        <input type="submit" class="input-group-addon" id="basic-addon2"/><i class="ti-search"></i>
+                    </div>
+                </form>
+            </div><div>
+            <a style="color: #f8f7f9" href="blog-lg-post-grid">Your profile</a></div>
         </div>
     </div>
 </nav>
@@ -456,54 +459,22 @@
     <div class="container">
         <div class="row">
             <div class=" col-md-8 ml-auto mr-auto">
-                <h1 class='text-uppercase'>Your Profile</h1>
+                <h1 class='text-uppercase'>Rezults</h1>
             </div>
         </div>
     </div>
 </div><!--page title end-->
 <div class="container mb30">
-    <div th:if="${currentUser.note}==true">
-        <h3 >We have a new note</h3>
-    </div>
-    <article class="col-md-12 post-masonry mb40">
-        <img th:src="@{/image(fileName=${currentUser.getPicUrl()})}" alt=""   class="img-fluid mb20">
-        <a href="blog-lg-post-grid"><h4 class="masonry-title mb0" th:text="${currentUser.name}"></h4></a>
-        <a href="blog-lg-post-grid"><h4 class="masonry-title mb0" th:text="${currentUser.surname}"></h4></a>
-        <ul class="post-meta list-inline">
-            <li class="list-inline-item">
-                <i class="fa fa-tags" th:text="${currentUser.getUserType()}"></i>
-            </li>
-        </ul>
-        <!--<p>-->
-        <!--Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus .-->
-        <!--</p>-->
-        <a href="page-contact-basic" class='btn btn-outline-secondary'>Settings</a><br>
-        <a href="add-article" class='btn btn-outline-secondary'>Add Article</a>
-    </article><!--article post-->
+<form th:each="u:${searchUser}">
+    <a th:href="@{/guestUser(id=${u.getId()})}" name="id"><h2 th:text="${u.name}"></h2>
+    <h2 th:text="${u.surname}"></h2></a>
 
 
-    <div class="col-md-9">
-        <h1>My questions</h1><br>
-        <article class="article-post mb70" th:each="q:${alquestion}">
-            <a class="post-thumb mb30" href="blog-sidebar-left#">
-                <img th:src="@{/image(fileName=${q.getPicUrl()})}" alt="" class="img-fluid" >
-                <div class="post-overlay">
-                    <span>Photography question</span>
-                </div>
-            </a><!--thumb-->
-            <div class="post-content">
-                <a href="blog-sidebar-left#"><h2 class="post-title" th:text="${q.title}"></h2></a>
-                <ul class="post-meta list-inline">
-                    <li class="list-inline-item">
-                        <i class="fa fa-calendar-o"></i> <a href="blog-sidebar-left#" th:text="${q.getDate()}"></a>
-                    </li>
-                </ul>
-                <p th:text="${q.description}"></p>
-                <a href="blog-sidebar-left#" class="btn btn-outline-secondary">Read More</a>
-            </div>
-        </article>
-    </div>
-    <div class="row" id="blog-masonry"></div>
+</form>
+
+
+
+
 </div>
 <footer class="footer footer-dark pt50 pb30">
     <div class="container">

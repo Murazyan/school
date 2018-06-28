@@ -6,7 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -34,4 +35,13 @@ public class User {
     private int age;
     @Column(name = "pic_url")
     private String picUrl;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_friends",
+            joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") },
+            inverseJoinColumns = { @JoinColumn(name = "friend_id", referencedColumnName = "id") })
+    private List<User> friendsUser;
+    @Column
+    private boolean note;
+
+
 }
