@@ -53,7 +53,8 @@ public class MainController {
     private String imageUploadDir;
 
     @GetMapping("/image")
-    public void getImage(HttpServletResponse response, @RequestParam("fileName") String fileName) throws IOException {
+    public void getImage(HttpServletResponse response,
+                         @RequestParam("fileName") String fileName) throws IOException {
         InputStream in = new FileInputStream(imageUploadDir + fileName);
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         IOUtils.copy(in, response.getOutputStream());
@@ -105,15 +106,13 @@ public class MainController {
     }
 
     @GetMapping("/blog-lg-post-grid")
-    public String bloglgpostgrid(ModelMap modelMap, @AuthenticationPrincipal CurrentUser currentUser) {
+    public String bloglgpostgrid(ModelMap modelMap,
+                                 @AuthenticationPrincipal CurrentUser currentUser) {
         modelMap.addAttribute("currentUser", currentUser.getUser());
         modelMap.addAttribute("alquestion", questionRepository.findAllByUserId(currentUser.getUser().getId()));
         modelMap.addAttribute("alluser", userRepository.findAll());
         User user = currentUser.getUser();
-
-
         modelMap.addAttribute("currentfollowing", user.getFriendsUser());
-
         return "blog-lg-post-grid";
     }
 
@@ -133,7 +132,6 @@ public class MainController {
         return "page-team";
     }
 
-
     @GetMapping("/blog-contained")
     public String blogContained(ModelMap modelMap) {
         modelMap.addAttribute("allLesson", lessonRepository.findAll());
@@ -142,7 +140,8 @@ public class MainController {
     }
 
     @GetMapping("/add-article")
-    public String addArticle(ModelMap modelMap, @AuthenticationPrincipal CurrentUser currentUser) {
+    public String addArticle(ModelMap modelMap,
+                             @AuthenticationPrincipal CurrentUser currentUser) {
         modelMap.addAttribute("currentUser", currentUser.getUser());
         modelMap.addAttribute("article", new Article());
         modelMap.addAttribute("articlePictur", new ArticlePicture());
@@ -152,7 +151,8 @@ public class MainController {
 
     @PostMapping("/addArticle")
     public String addArticle(@AuthenticationPrincipal CurrentUser currentUser,
-                             @ModelAttribute Article article, @ModelAttribute ArticlePicture articlePicture,
+                             @ModelAttribute Article article,
+                             @ModelAttribute ArticlePicture articlePicture,
                              @RequestParam("picture") MultipartFile multipartFile) throws IOException {
         String pictureName = System.currentTimeMillis() + "_" + multipartFile.getOriginalFilename();
         File imageDir = new File(imageUploadDir);
@@ -171,22 +171,23 @@ public class MainController {
     }
 
     @GetMapping("/blog-sidebar-right")
-    public String sidebarRight(ModelMap map, @RequestParam(value = "id") Integer id) {
+    public String sidebarRight(ModelMap map,
+                               @RequestParam(value = "id") Integer id) {
         map.addAttribute("lessons", lessonRepository.findAll());
         map.addAttribute("questuonBylesson", questionRepository.findAllByLessonId(id));
         return "blog-sidebar-right";
     }
 
     @GetMapping("/blog-masonry")
-    public String allArticle(ModelMap map,
-                             @AuthenticationPrincipal CurrentUser currentUser) {
-
+    public String allArticle(ModelMap map) {
         map.addAttribute("allarticlePicture", articlePictureRepository.findAll());
         return "blog-masonry";
     }
 
     @GetMapping("/post-gallery")
-    public String postgallery(ModelMap map, @AuthenticationPrincipal CurrentUser currentUser, @RequestParam(value = "id") Integer id) {
+    public String postgallery(ModelMap map,
+                              @AuthenticationPrincipal CurrentUser currentUser,
+                              @RequestParam(value = "id") Integer id) {
         map.addAttribute("currentUser", currentUser.getUser());
         map.addAttribute("comment", new Comment());
 
@@ -197,7 +198,9 @@ public class MainController {
     }
 
     @GetMapping("/question-readmore")
-    public String questionReadMore(ModelMap map, @AuthenticationPrincipal CurrentUser currentUser, @RequestParam(value = "id") Integer id) {
+    public String questionReadMore(ModelMap map,
+                                   @AuthenticationPrincipal CurrentUser currentUser,
+                                   @RequestParam(value = "id") Integer id) {
         map.addAttribute("currentUser", currentUser.getUser());
         map.addAttribute("question", new Question());
         map.addAttribute("commentquestion", new Comment());
@@ -209,8 +212,8 @@ public class MainController {
     }
 
     @PostMapping("/add-coment")
-    public String addComment(ModelMap modelMap, @AuthenticationPrincipal CurrentUser currentUser, @ModelAttribute Comment comment, @RequestParam(value = "id") Integer id
-    ) {
+    public String addComment(@AuthenticationPrincipal CurrentUser currentUser,
+                             @ModelAttribute Comment comment, @RequestParam(value = "id") Integer id) {
         User user = currentUser.getUser();
         Optional<ArticlePicture> byId = articlePictureRepository.findById(id);
         comment.setUser(user);
@@ -220,8 +223,8 @@ public class MainController {
     }
 
     @PostMapping("/add-question-coment")
-    public String addQuestionComment(ModelMap modelMap, @AuthenticationPrincipal CurrentUser currentUser, @ModelAttribute Comment comment, @RequestParam(value = "id") Integer id
-    ) {
+    public String addQuestionComment(@AuthenticationPrincipal CurrentUser currentUser,
+                                     @ModelAttribute Comment comment, @RequestParam(value = "id") Integer id) {
         User user = currentUser.getUser();
         Optional<Question> byId = questionRepository.findById(id);
         comment.setUser(user);
@@ -252,7 +255,8 @@ public class MainController {
     }
 
     @GetMapping("/guestUser")
-    public String guestuser(ModelMap modelMap, @RequestParam(value = "id") Integer id) {
+    public String guestuser(ModelMap modelMap,
+                            @RequestParam(value = "id") Integer id) {
         modelMap.addAttribute("allU",new User());
         modelMap.addAttribute("guestUser", userRepository.findById(id));
         modelMap.addAttribute("allQuestion", questionRepository.findAllByUserId(id));
@@ -260,7 +264,8 @@ public class MainController {
     }
 
     @PostMapping("/following")
-    public String following(@AuthenticationPrincipal CurrentUser currentUser, @RequestParam(value = "id") Integer id) {
+    public String following(@AuthenticationPrincipal CurrentUser currentUser,
+                            @RequestParam(value = "id") Integer id) {
         User user = currentUser.getUser();
         Optional<User> byId = userRepository.findById(id);
         List<User> friendsUser = user.getFriendsUser();
