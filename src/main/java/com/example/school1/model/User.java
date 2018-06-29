@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -35,11 +36,17 @@ public class User {
     private int age;
     @Column(name = "pic_url")
     private String picUrl;
+    //    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(name = "user_friends",
+//            joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") },
+//            inverseJoinColumns = { @JoinColumn(name = "friend_id", referencedColumnName = "id") })
+//    private List<User> friendsUser;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_friends",
-            joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") },
-            inverseJoinColumns = { @JoinColumn(name = "friend_id", referencedColumnName = "id") })
-    private List<User> friendsUser;
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "friend_id"))
+    protected Set<User> friendsUser ;
+
     @Column
     private boolean note;
 

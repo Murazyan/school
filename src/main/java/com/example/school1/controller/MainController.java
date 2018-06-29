@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-//import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -27,9 +26,13 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class MainController {
+    @Autowired
+    private MessageRepository messageRepository;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -113,6 +116,18 @@ public class MainController {
         modelMap.addAttribute("alluser", userRepository.findAll());
         User user = currentUser.getUser();
         modelMap.addAttribute("currentfollowing", user.getFriendsUser());
+        List<User> followerUser = new ArrayList<>();
+        List<User> all = userRepository.findAll();
+        for (User user1 : all) {
+            Set<User> friendsUser = user1.getFriendsUser();
+            for (User user2 : friendsUser) {
+                if (user2.getId() == user.getId()) {
+                    followerUser.add(user1);
+
+                }
+            }
+        }
+        modelMap.addAttribute("followers", followerUser);
         return "blog-lg-post-grid";
     }
 
@@ -257,7 +272,7 @@ public class MainController {
     @GetMapping("/guestUser")
     public String guestuser(ModelMap modelMap,
                             @RequestParam(value = "id") Integer id) {
-        modelMap.addAttribute("allU",new User());
+        modelMap.addAttribute("allU", new User());
         modelMap.addAttribute("guestUser", userRepository.findById(id));
         modelMap.addAttribute("allQuestion", questionRepository.findAllByUserId(id));
         return "guestUser";
@@ -265,12 +280,17 @@ public class MainController {
 
     @PostMapping("/following")
     public String following(@AuthenticationPrincipal CurrentUser currentUser,
-                            @RequestParam(value = "id") Integer id) {
+                            @RequestParam(value = "id") Integer id
+
+    ) {
         User user = currentUser.getUser();
         Optional<User> byId = userRepository.findById(id);
-        List<User> friendsUser = user.getFriendsUser();
+
+        Set<User> friendsUser = user.getFriendsUser();
         User user1 = byId.get();
+
         user1.setNote(true);
+
         userRepository.save(user1);
         friendsUser.add(byId.get());
         user.setFriendsUser(friendsUser);
@@ -278,5 +298,38 @@ public class MainController {
         return "redirect:/blog-lg-post-grid";
     }
 
+    @GetMapping("/followers")
+    public String followers(ModelMap modelMap,
+                            @AuthenticationPrincipal CurrentUser currentUser) {
+        User user = currentUser.getUser();
+
+        return "guestUser";
+    }
+
+
+    @GetMapping("/message")
+    public String message(ModelMap modelMap,
+                          @AuthenticationPrincipal CurrentUser currentUser,
+                          @RequestParam(value = "id") Integer id) {
+        User user = currentUser.getUser();
+        modelMap.addAttribute("toUser", userRepository.findById(id));
+        modelMap.addAttribute("message", new Message());
+
+        return "message";
+    }
+
+    @PostMapping("/sendmessage")
+    public String sendmessage(ModelMap modelMap,
+                          @AuthenticationPrincipal CurrentUser currentUser,
+                          @RequestParam(value = "id") Integer id) {
+        User fromuser = currentUser.getUser();
+        Optional<User> byId = userRepository.findById(id);
+        User touser = byId.get();
+        Message message = new Message();
+        message.setFromUser(fromuser);
+        message.setToUser(touser);
+        messageRepository.save(message);
+        return "redirect:/message";
+    }
 
 }

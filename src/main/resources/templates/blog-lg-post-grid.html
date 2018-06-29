@@ -33,7 +33,9 @@
                 <div class="oHidden">
                     <span class="close"><i class="ti-close"></i></span>
                     <h4><a th:href="@{/guestUser(id=${a.getId()})}" name="id" th:text="${a.name}"></a></h4>
-                    <p class="text-white-gray"><strong>$299.00</strong> x 1</p>
+                    <!--<h4 style="color: #0b15e4"><i class="fa fa-envelope" style="color:#2e20e4;"></i>Message</h4></a>-->
+                    <h4><a th:href="@{/message(id=${a.getId()})}"><i class="fa fa-envelope"></i>Message</a></h4>
+
                 </div>
             </li>
         </ul>
@@ -232,8 +234,30 @@
                     </ul>
                 </li>
                 <li class="nav-item dropdown dropdown-full-width">
-                    <a href="javascript:void(0)" class="nav-link menu-btn" style="color: #fff4f3;">My Folloing
+                    <a href="javascript:void(0)" class="nav-link menu-btn" style="color: #fff4f3;">Following
                         <span class="badge badge-default" th:text="${currentfollowing.size()}"></span></a>
+                </li>
+                <li class="nav-item dropdown active">
+                    <a class="nav-link  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                       aria-expanded="false" href="blog-lg-post-grid">Followers
+                    <span class="badge badge-default" th:text="${followers.size()}"></span></a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <ul class="list-unstyled">
+                            <!--<li th:if="${currentUser.note}==true">-->
+                                <!--<h4 style="color: red">We have a new note</h4>-->
+                            <!--</li>-->
+                            <li class="clearfix" th:each="a:${followers}">
+                                <a href="blog-lg-post-grid" class="float-left">
+                                    <img th:src="@{/image(fileName=${a.getPicUrl()})}" class="img-fluid" alt="" width="60">
+                                </a>
+                                <div class="oHidden">
+                                    <!--<span class="close"><i class="ti-close"></i></span>-->
+                                   <div align="right"><a th:href="@{/following(${a.getId()})}">Following</a></div>
+                                    <h4><a th:href="@{/guestUser(id=${a.getId()})}" name="id" th:text="${a.name}"></a></h4>
+                                </div>
+                            </li>
+                        </ul>
+                    </ul>
                 </li>
 
                 <li class="nav-item dropdown active">
