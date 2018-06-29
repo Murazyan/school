@@ -250,7 +250,6 @@ public class MainController {
 
     @GetMapping("/search")
     public String searchUser(ModelMap map, @RequestParam(value = "keyword") String text) {
-
         String userNamae;
         String userSurname;
         String[] split = text.split(" ");
@@ -280,17 +279,12 @@ public class MainController {
 
     @PostMapping("/following")
     public String following(@AuthenticationPrincipal CurrentUser currentUser,
-                            @RequestParam(value = "id") Integer id
-
-    ) {
+                            @RequestParam(value = "id") Integer id) {
         User user = currentUser.getUser();
         Optional<User> byId = userRepository.findById(id);
-
         Set<User> friendsUser = user.getFriendsUser();
         User user1 = byId.get();
-
         user1.setNote(true);
-
         userRepository.save(user1);
         friendsUser.add(byId.get());
         user.setFriendsUser(friendsUser);
@@ -314,22 +308,24 @@ public class MainController {
         User user = currentUser.getUser();
         modelMap.addAttribute("toUser", userRepository.findById(id));
         modelMap.addAttribute("message", new Message());
+        Optional<User> byId = userRepository.findById(id);
+        modelMap.addAttribute("messages", messageRepository.findAllByFromUserOrToUser(user, byId.get()));
 
         return "message";
     }
 
     @PostMapping("/sendmessage")
     public String sendmessage(ModelMap modelMap,
-                          @AuthenticationPrincipal CurrentUser currentUser,
-                          @RequestParam(value = "id") Integer id) {
+                              @AuthenticationPrincipal CurrentUser currentUser,
+                              @RequestParam(value = "id") Integer id,
+                              @ModelAttribute("message") Message message) {
         User fromuser = currentUser.getUser();
         Optional<User> byId = userRepository.findById(id);
         User touser = byId.get();
-        Message message = new Message();
         message.setFromUser(fromuser);
         message.setToUser(touser);
         messageRepository.save(message);
-        return "redirect:/message";
+        return "redirect:/blog-lg-post-grid";
     }
 
 }

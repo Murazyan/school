@@ -23,5 +23,5 @@ public class Message {
     @ManyToOne
     private User toUser;
     @Column
-    private String text;
+    private String description;
 }
