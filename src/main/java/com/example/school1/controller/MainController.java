@@ -119,7 +119,7 @@ public class MainController {
         List<User> followerUser = new ArrayList<>();
         List<User> all = userRepository.findAll();
         for (User user1 : all) {
-            Set<User> friendsUser = user1.getFriendsUser();
+            List<User> friendsUser = user1.getFriendsUser();
             for (User user2 : friendsUser) {
                 if (user2.getId() == user.getId()) {
                     followerUser.add(user1);
@@ -282,7 +282,7 @@ public class MainController {
                             @RequestParam(value = "id") Integer id) {
         User user = currentUser.getUser();
         Optional<User> byId = userRepository.findById(id);
-        Set<User> friendsUser = user.getFriendsUser();
+        List<User> friendsUser = user.getFriendsUser();
         User user1 = byId.get();
         user1.setNote(true);
         userRepository.save(user1);
@@ -301,16 +301,49 @@ public class MainController {
     }
 
 
+//    @GetMapping("/message")
+//    public String message(ModelMap modelMap,
+//                          @AuthenticationPrincipal CurrentUser currentUser,
+//                          @RequestParam(value = "id") Integer id) {
+//        User user = currentUser.getUser();
+//        modelMap.addAttribute("toUser", userRepository.findById(id));
+//        modelMap.addAttribute("fromUser", userRepository.findById(currentUser.getUser().getId()));
+//        modelMap.addAttribute("message", new Message());
+//        Optional<User> byId = userRepository.findById(id);
+//        List<Message> allByFromUserAndToUser = messageRepository.findAllByFromUserAndToUser(user, byId.get());
+//        allByFromUserAndToUser.addAll(messageRepository.findAllByFromUserAndToUser(byId.get(), user));
+//        modelMap.addAttribute("messages",allByFromUserAndToUser);
+//        return "message";
+//    }
+
+
     @GetMapping("/message")
     public String message(ModelMap modelMap,
                           @AuthenticationPrincipal CurrentUser currentUser,
                           @RequestParam(value = "id") Integer id) {
         User user = currentUser.getUser();
         modelMap.addAttribute("toUser", userRepository.findById(id));
+        modelMap.addAttribute("fromUser", userRepository.findById(currentUser.getUser().getId()));
         modelMap.addAttribute("message", new Message());
         Optional<User> byId = userRepository.findById(id);
-        modelMap.addAttribute("messages", messageRepository.findAllByFromUserOrToUser(user, byId.get()));
+        List<Message> allByFromUserAndToUser = messageRepository.findAllByFromUserAndToUser(user, byId.get());
+        allByFromUserAndToUser.addAll(messageRepository.findAllByFromUserAndToUser(byId.get(), user));
+        int size = allByFromUserAndToUser.size();
+        Message [] arrayList = new Message[size];
+        Message[] messages = allByFromUserAndToUser.toArray(arrayList);
+       Message temp;
+        allByFromUserAndToUser.addAll(messageRepository.findAllByFromUserAndToUser(byId.get(), user));
 
+        for (int i = 0; i < messages.length; i++) {
+            for (int j = 1; j < messages.length-i ; j++) {
+                if(messages[j-1].getId()>messages[j].getId()) {
+                    temp = messages[j-1];
+                    messages[j-1] = messages[j];
+                    messages[j] = temp;
+                }
+            }
+        }
+        modelMap.addAttribute("messages",messages);
         return "message";
     }
 

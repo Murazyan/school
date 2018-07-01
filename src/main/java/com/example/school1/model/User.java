@@ -45,7 +45,7 @@ public class User {
     @JoinTable(name = "user_friends",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "friend_id"))
-    protected Set<User> friendsUser ;
+    protected List<User> friendsUser ;
 
     @Column
     private boolean note;

@@ -23,9 +23,9 @@
             <a href="javascript:void(0)" class="pushy-link text-white-gray">Close</a>
         </div>
         <ul class="list-unstyled">
-            <li th:if="${currentUser.note}==true">
-                <h4 style="color: red">We have a new note</h4>
-            </li>
+            <!--<li th:if="${currentUser.note}==true">-->
+                <!--<h4 style="color: red">We have a new note</h4>-->
+            <!--</li>-->
             <li class="clearfix" th:each="a:${currentfollowing}">
                 <a href="blog-lg-post-grid" class="float-left">
                     <img th:src="@{/image(fileName=${a.getPicUrl()})}" class="img-fluid" alt="" width="60">

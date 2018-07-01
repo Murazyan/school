@@ -32,6 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/question-readmore").hasAnyAuthority("ADMIN","TEACHER","PUPIL", "GUEST")
                 .antMatchers("/guestUser").hasAnyAuthority("ADMIN","TEACHER","PUPIL", "GUEST")
                 .antMatchers("/search").hasAnyAuthority("ADMIN","TEACHER","PUPIL", "GUEST")
+                .antMatchers("/message").hasAnyAuthority("ADMIN","TEACHER","PUPIL", "GUEST")
 //                .antMatchers("/addCategory").hasAuthority("ADMIN")
 //                .antMatchers("/addSubject").hasAuthority("ADMIN")
 //                .antMatchers("/addRegion").hasAuthority("ADMIN")

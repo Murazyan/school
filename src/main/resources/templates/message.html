@@ -468,39 +468,30 @@
             </div><!--/col-->
         </div>
         <div class="col-md-9">
-            <!--<article class="article-post mb70" th:each="q:${messages}">-->
-                <!--<div class="post-content">-->
-                    <!--<i class="fa fa-user-circle-o"></i><i th:text="${q.getFromUser().name}"></i><i-->
-                        <!--th:text="${q.getFromUser().surname}"></i>-->
-                    <!--<p th:text="${q.getDescription()}"></p>-->
-                <!--</div>-->
-                <!--<div class="post-content">-->
-                    <!--<i class="fa fa-user-circle-o"></i><i th:text="${q.getToUser().name}"></i><i-->
-                        <!--th:text="${q.getToUser().surname}"></i>-->
-                    <!--<p th:text="${q.getDescription()}"></p>-->
-                <!--</div>-->
-            <!--</article>-->
-
+            <article th:each="q:${messages}">
+                <article th:if="${q.getToUser().id==toUser.get().id}" align="right">
+                    <i class="fa fa-user-circle-o"></i>
+                    <i th:text="${q.getFromUser().name}"></i>
+                    <i th:text="${q.getFromUser().surname}"></i>
+                    <p th:text="${q.getDescription()}"></p>
+                </article>
+                <article  th:if="${q.getFromUser().id==toUser.get().id}" align="left">
+                    <i class="fa fa-user-circle-o"></i>
+                    <i th:text="${q.getFromUser().name}"></i>
+                    <i th:text="${q.getFromUser().surname}"></i>
+                    <p th:text="${q.getDescription()}"></p>
+                </article>
+            </article>
             <form th:action="@{/sendmessage}" method="post" th:object="${message}">
                 <div class="post-content">
                     <textarea class="form-control" placeholder="Message" id="description" name="description"
                               th:field="*{description}"></textarea></div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-rounded btn-primary btn-block" >send
+                    <button type="submit" class="btn btn-rounded btn-primary btn-block">send
                         <input type="hidden" th:value="${toUser.get().getId()}" name="id">
                     </button>
                 </div>
             </form>
-
-
-            <!--<article th:action="@{/sendmessage}" class="article-post mb70" th:object="${message}">-->
-            <!--<div class="post-content">-->
-            <!--<textarea class="form-control" placeholder="Message" id="description" name="description" th:field="*{text}"></textarea></div>-->
-            <!--<button type="submit" class="btn btn-rounded btn-primary btn-block">Send-->
-            <!--<input type="hidden" th:id="${toUser.get().getId()}"/>-->
-            <!--</button>-->
-            <!--</article>-->
-
         </div>
     </div>
     <footer class="footer footer-dark pt50 pb30">
