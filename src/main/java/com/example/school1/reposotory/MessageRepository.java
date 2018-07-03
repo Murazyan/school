@@ -8,6 +8,4 @@ import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message,Integer> {
 List<Message> findAllByFromUserAndToUser(User a, User b);
-List<Message> findAllByToUserAndFromUser(User a, User b);
-
 }

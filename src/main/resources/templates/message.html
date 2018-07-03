@@ -467,8 +467,9 @@
                 </ul>
             </div><!--/col-->
         </div>
-        <div class="col-md-9">
-            <article th:each="q:${messages}">
+        <div class="col-md-9" >
+            <div style="overflow:scroll; height:400px; width: auto">
+            <article th:each="q:${messages}" >
                 <article th:if="${q.getToUser().id==toUser.get().id}" align="right">
                     <i class="fa fa-user-circle-o"></i>
                     <i th:text="${q.getFromUser().name}"></i>
@@ -482,6 +483,7 @@
                     <p th:text="${q.getDescription()}"></p>
                 </article>
             </article>
+            </div>
             <form th:action="@{/sendmessage}" method="post" th:object="${message}">
                 <div class="post-content">
                     <textarea class="form-control" placeholder="Message" id="description" name="description"
